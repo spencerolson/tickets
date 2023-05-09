@@ -76,7 +76,7 @@ class Tickets
 
     clear and return if name == main_menu_option
 
-    @tickets.reject! { |ticket| ticket.name == name }
+    remove_ticket(name)
     write_file
     clear
   end
@@ -99,7 +99,8 @@ class Tickets
     description = @prompt.ask("Ticket description:", default: ticket.description)
     priority = @prompt.ask("Ticket Priority:", convert: :integer, required: true, default: ticket.priority)
     completed = @prompt.ask("Completed?", convert: :boolean, required: true, default: ticket.completed?)
-    save_ticket(name: name, description: description, priority: priority, completed: completed)
+    updated_ticket = Ticket.new(name: name, description: description, priority: priority, completed: completed)
+    update_ticket(old_ticket: ticket, updated_ticket: updated_ticket)
   end
 
   def quit
@@ -115,10 +116,13 @@ class Tickets
     File.write(@filename, @tickets.to_json)
   end
 
-  def save_ticket(attrs)
-    ticket = Ticket.new(attrs)
-    @tickets.unshift(ticket)
-    @tickets.uniq! { |ticket| ticket.name }
+  def remove_ticket(name)
+    @tickets.reject! { |ticket| ticket.name == name }
+  end
+
+  def update_ticket(old_ticket:, updated_ticket:)
+    remove_ticket(old_ticket.name) unless old_ticket.placeholder?
+    @tickets << updated_ticket
     write_file
   end
 

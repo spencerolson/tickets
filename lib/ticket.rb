@@ -32,6 +32,10 @@ class Ticket
     str
   end
 
+  def placeholder?
+    false
+  end
+
   private
 
   def parse(details)
