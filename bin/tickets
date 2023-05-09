@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require_relative "../lib/tickets"
+
+
+options = {}
+OptionParser.new do |parser|
+  parser.on("-a", "--add", "Add a ticket") do |add|
+    options[:add] = add
+  end
+
+  parser.on("-e", "--edit", "Edit a ticket") do |edit|
+    options[:edit] = edit
+  end
+
+  parser.on("-d", "--delete", "Delete a ticket") do |delete|
+    options[:delete] = delete
+  end
+
+  parser.on("-l", "--list", "List tickets") do |list|
+    options[:list] = list
+  end
+end.parse!
+
+Tickets.new.run(options)
