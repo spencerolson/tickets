@@ -14,7 +14,6 @@ class Tickets
         Ticket.new(ticket)
       end
     rescue StandardError => e
-      puts "encountered error: #{e}"
       @tickets = []
     end
   end
