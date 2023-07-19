@@ -20,6 +20,10 @@ OptionParser.new do |parser|
   parser.on("-l", "--list", "List tickets") do |list|
     options[:list] = list
   end
+
+  parser.on("-c", "--completed", "List completed tickets") do |list_completed|
+    options[:list_completed] = list_completed
+  end
 end.parse!
 
 Tickets.new.run(options)

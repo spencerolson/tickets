@@ -27,6 +27,8 @@ class Tickets
       delete
     elsif options[:list]
       list
+    elsif options[:list_completed]
+      list_completed
     else
       main_menu
     end
@@ -40,6 +42,7 @@ class Tickets
       "Edit a ticket" => :edit,
       "Delete a ticket" => :delete,
       "List tickets" => :list,
+      "List completed tickets" => :list_completed,
       "Quit" => :quit
     }
     action = @prompt.select("What do you want to do?", choices, cycle: true)
@@ -83,7 +86,13 @@ class Tickets
 
   def list
     clear
-    ordered_tickets.each { |ticket| puts ticket }
+    ordered_tickets.reject(&:completed?).each { |ticket| puts ticket }
+    puts ""
+  end
+
+  def list_completed
+    clear
+    ordered_tickets.select(&:completed?).each { |ticket| puts ticket }
     puts ""
   end
 
