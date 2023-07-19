@@ -99,7 +99,7 @@ class Tickets
   def select_ticket(prompt)
     yield if @tickets.empty?
 
-    options = ordered_tickets.map(&:name)
+    options = ordered_tickets.reject(&:completed?).map(&:name)
     ticket_name = @prompt.select(prompt, options_with_main_menu(options))
   end
 
